@@ -15,3 +15,9 @@ Installation
 Usage
 -----
  * Run `portraithell` to start things up.
+
+Develop
+-------
+ * Clone
+ * Run `python setup.py develop`
+ * Achieve success
