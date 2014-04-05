@@ -17,7 +17,9 @@ author = "Adam Wentz, Chris Sinchok"
 author_email = "tech@theonion.com"
 license = "MIT"
 requires = [
-    "Pillow",
+    "Pillow==2.4.0",
+    "gevent==1.0",
+    "requests==2.2.1",
 ]
 
 
