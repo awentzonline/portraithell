@@ -118,14 +118,15 @@ def run_troller():
     bad_video_q = Queue()
     tumblr_q = Queue()
     reddit_q = Queue()
+    debug_q = Queue()
     conf = [
         (scrape_reddit, youtube_interest_q),
         (download_youtube_thumbs, youtube_interest_q, detector_input_q),
         (detect_bad_videos, detector_input_q, bad_video_q),
-        (debug_results, bad_video_q),
+        (debug_results, debug_q),
         (post_to_tumblr, tumblr_q),
         (post_reddit_response, reddit_q),
-        (bad_video_fanout, bad_video_q, (tumblr_q, reddit_q)),
+        (bad_video_fanout, bad_video_q, (tumblr_q, reddit_q, debug_q)),
     ]
     group = Group()
     for args in conf:
