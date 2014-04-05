@@ -14,7 +14,7 @@ package = "portraithell"
 description = "Detect portrait-oriented images."
 #url = ""
 author = "Adam Wentz, Chris Sinchok"
-author_email = "tech@theonion.com"
+author_email = "awentz@theonion.com"
 license = "MIT"
 requires = [
     "Pillow==2.4.0",
