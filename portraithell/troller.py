@@ -77,9 +77,7 @@ def scrape_reddit(youtube_interest_q, delay=10):
 def download_youtube_thumbs(youtube_interest_q, detector_input_q):
     for target_video in youtube_interest_q:
         urls = target_video.frame_urls
-        #print "Downloading frames for {}".format(target_video.reddit_id)
         for url in urls:
-            #print url
             response = requests.get(url)
             image = Image.open(StringIO(response.content))
             target_video.frames.append(image)
@@ -101,12 +99,12 @@ def bad_video_fanout(bad_video_q, out_qs):
 
 def post_to_tumblr(tumblr_q):
     for video in tumblr_q:
-        print("Posting to tumblr: {}".format(video))
+        print('Posting to tumblr: {}'.format(video))
 
 
 def post_reddit_response(video_q):
     for video in video_q:
-        print("Making a polite message on reddit: {}".format(video))
+        print('Making a polite message on reddit: {}'.format(video))
 
 
 def debug_results(bad_video_q):
