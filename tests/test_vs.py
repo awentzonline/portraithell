@@ -21,7 +21,7 @@ def test_portrait():
     for set_path in os.listdir(base_path):
         imgs = images_from_path(os.path.join(base_path, set_path))
         assert detector.detect(imgs), \
-            'Failed to detect portait orientation ' + set_path
+            'Failed to detect portait orientation: {}'.format(set_path)
 
 
 def test_landscape():
@@ -32,4 +32,4 @@ def test_landscape():
     for set_path in os.listdir(base_path):
         assert not detector.detect(
             images_from_path(os.path.join(base_path, set_path))
-        ), 'Failed to detect landscape orientation' + set_path
+        ), 'Failed to detect landscape orientation: {}'.format(set_path)

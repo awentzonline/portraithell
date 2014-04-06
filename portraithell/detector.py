@@ -71,7 +71,10 @@ class BandDetector(Detector):
         if (float(landscape_bands) / float(portrait_bands)) > 0.25:
             return False
 
-        mean_edge = sum(edges) / len(edges)
+        mean_edge = sum(edges) / float(len(edges))
+        if (mean_edge / float(img_w)) < 0.2:  # Vertical videos seem to have edges from 24%-28% of the thumb width
+            return False
+
         edge_std_dev = math.sqrt(sum((edge - mean_edge) ** 2 for edge in edges) / len(edges))
         if edge_std_dev > 1:
             return False
