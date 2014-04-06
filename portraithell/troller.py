@@ -1,9 +1,11 @@
 from gevent.monkey import patch_all; patch_all()  # no qa
 
+import os
 import re
 from StringIO import StringIO
 
 import gevent
+import pytumblr
 import requests
 from gevent.pool import Group
 from gevent.queue import Queue
@@ -98,8 +100,24 @@ def bad_video_fanout(bad_video_q, out_qs):
 
 
 def post_to_tumblr(tumblr_q):
+    consumer_key = os.environ.get('TUMBLR_CONSUMER_KEY', None)
+    consumer_secret = os.environ.get('TUMBLR_CONSUMER_SECRET', None)
+    oauth_token = os.environ.get('TUMBLR_OAUTH_TOKEN', None)
+    oauth_secret = os.environ.get('TUMBLR_OAUTH_SECRET', None)
+    blog_name = os.environ.get('TUMBLR_BLOG_NAME', None)
+    assert consumer_key and consumer_secret and \
+        oauth_token and oauth_secret and blog_name
+
+    client = pytumblr.TumblrRestClient(
+        consumer_key, consumer_secret, oauth_token, oauth_secret
+    )
     for video in tumblr_q:
         print('Posting to tumblr: {}'.format(video))
+        client.create_video(
+            blog_name,
+            state='draft',
+            embed=video.youtube_url
+        )
 
 
 def post_reddit_response(video_q):
