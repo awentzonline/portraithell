@@ -2,7 +2,7 @@ import os
 
 from PIL import Image
 
-from portraithell import Detector
+from portraithell.detector import BandDetector as Detector
 
 
 def images_from_path(path):
