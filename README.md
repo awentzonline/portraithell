@@ -14,6 +14,7 @@ Installation
 
 Usage
 -----
+ * Copy `vars.sh.example` to `vars.sh` (or something) and source it
  * Run `portraithell` to start things up.
 
 Develop
