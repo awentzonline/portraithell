@@ -1,3 +1,6 @@
+import math
+
+
 class Detector(object):
     def detect(self, images):
         score = sum(map(self.check_image, images))
@@ -32,12 +35,14 @@ class BandDetector(Detector):
         portrait_bands = 0
         landscape_bands = 0
 
+        edges = []
+
         for y in range(0, img_h, 20):  # We'll check a band every 20 pixels.
             test_band = image.crop(box=(0, y, img_w, y + 1))
             
             streak = None  # A streak of black pixels, if there is one.
             for index, pixel in enumerate(test_band.getdata()):
-                if pixel == (0, 0, 0):
+                if sum(pixel) < 15:  # Close enough to black
                     if streak:
                         streak[1] = index
                     else:
@@ -49,14 +54,14 @@ class BandDetector(Detector):
                 else:
                     if streak:
                         # Looks like the streak is broken.
-                        if index < (img_w / 4):
-                            # I don't think this band is legit, let's break.
-                            landscape_bands += 1
-                            break
+                        if streak[0] == 0:
+                            edges.append((streak[1] - streak[0]))
+
                         streak = None
             else:
-                if streak and (streak[1] - streak[0]) < (img_w / 4):
+                if streak:
                     portrait_bands += 1
+                    edges.append((streak[1] - streak[0]))
                 else:
                     landscape_bands += 1
 
@@ -65,7 +70,12 @@ class BandDetector(Detector):
 
         if (float(landscape_bands) / float(portrait_bands)) > 0.25:
             return False
-            
+
+        mean_edge = sum(edges) / len(edges)
+        edge_std_dev = math.sqrt(sum((edge - mean_edge) ** 2 for edge in edges) / len(edges))
+        if edge_std_dev > 1:
+            return False
+
         return True
 
 
